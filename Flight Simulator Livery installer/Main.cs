@@ -50,7 +50,7 @@ namespace Flight_Simulator_Livery_installer
                             downloadFolderPath = downloadFolderPath + @"\";
                         }
                         downloadPath = downloadFolderPath + "liveries.zip";
-                        if (!Directory.Exists(downloadFolderPath) || downloadFolderPath.Contains(@"Packages\Community") == false)
+                        if (!Directory.Exists(downloadFolderPath))
                         {
                             DialogResult dialogResult = MessageBox.Show("Wrong folder, would you like to view instructions?", "Wrong path", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
 

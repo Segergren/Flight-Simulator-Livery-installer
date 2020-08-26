@@ -37,7 +37,7 @@ namespace Flight_Simulator_Livery_installer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0.1")]
         public string applicationVersion {
             get {
                 return ((string)(this["applicationVersion"]));
