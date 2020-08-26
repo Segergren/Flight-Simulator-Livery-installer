@@ -1,4 +1,4 @@
-# Flight-Simulator-Livery-installer
+# Flight Simulator Livery installer
 The program makes it easy to install the latest leveries for Microsoft Flight Simulator 2020.
 
 ### Instructions: ([YouTube version](https://www.youtube.com/watch?v=_858t2Vfxi4))
