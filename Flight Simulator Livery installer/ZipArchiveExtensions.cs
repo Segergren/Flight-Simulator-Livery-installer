@@ -18,10 +18,14 @@ namespace Flight_Simulator_Livery_installer
                 string directory = Path.GetDirectoryName(completeFileName);
 
                 if (!Directory.Exists(directory))
+                {
                     Directory.CreateDirectory(directory);
+                    System.GC.Collect();
+                }
 
                 if (file.Name != "")
                     file.ExtractToFile(completeFileName, true);
+
             }
         }
     }

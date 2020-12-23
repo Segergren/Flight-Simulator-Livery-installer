@@ -44,6 +44,7 @@
             this.currentVersionlbl = new System.Windows.Forms.Label();
             this.progressbarAnimationHide = new System.Windows.Forms.Timer(this.components);
             this.refreshbtn = new System.Windows.Forms.PictureBox();
+            this.networkSpeed = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.closebtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizebtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -192,6 +193,11 @@
             this.refreshbtn.TabStop = false;
             this.refreshbtn.Click += new System.EventHandler(this.refreshbtn_Click);
             // 
+            // networkSpeed
+            // 
+            this.networkSpeed.Interval = 1000;
+            this.networkSpeed.Tick += new System.EventHandler(this.networkSpeed_Tick);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -243,6 +249,7 @@
         private System.Windows.Forms.Label currentVersionlbl;
         private System.Windows.Forms.Timer progressbarAnimationHide;
         private System.Windows.Forms.PictureBox refreshbtn;
+        private System.Windows.Forms.Timer networkSpeed;
     }
 }
 

@@ -40,28 +40,39 @@ namespace Flight_Simulator_Livery_installer
         {
             if (!Directory.Exists(@"C:\Users\" + Environment.UserName + @"\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community\"))
             {
-                if(!Directory.Exists(@"C:\Users\" + Environment.UserName + @"\AppData\Microsoft Flight Simulator\Packages\Community"))
+                if (!Directory.Exists(@"C:\Users\" + Environment.UserName + @"\AppData\Microsoft Flight Simulator\Packages\Community"))
                 {
                     while (true)
                     {
-                        downloadFolderPath = Microsoft.VisualBasic.Interaction.InputBox("Could not find the community folder, please input the file path.\nIt should end with " + @"'\Packages\Community\'" + "\n", "Not found.", @"\Packages\Community\");
-                        if (downloadFolderPath.Substring(downloadFolderPath.Length - 1) == @"\")
+                        downloadFolderPath = Microsoft.VisualBasic.Interaction.InputBox("Could not find the community folder, please input the file path.\nIt should end with " + @"'Community\'" + "\n", "Not found.", @"Community\");
+                        if (downloadFolderPath.Length > 0)
                         {
-                            downloadFolderPath = downloadFolderPath + @"\";
-                        }
-                        downloadPath = downloadFolderPath + "liveries.zip";
-                        if (!Directory.Exists(downloadFolderPath))
-                        {
-                            DialogResult dialogResult = MessageBox.Show("Wrong folder, would you like to view instructions?", "Wrong path", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-
-                            if (dialogResult == DialogResult.Yes)
+                            if (downloadFolderPath.Substring(downloadFolderPath.Length - 1) == @"\")
                             {
-                                Process.Start("https://pastebin.com/j8exYqRt");
+                                downloadFolderPath = downloadFolderPath + @"\";
+                            }
+                            downloadPath = downloadFolderPath + "liveries.zip";
+                            if (!Directory.Exists(downloadFolderPath))
+                            {
+                                DialogResult dialogResult = MessageBox.Show("Wrong folder, would you like to view instructions?", "Wrong path", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+
+                                if (dialogResult == DialogResult.Yes)
+                                {
+                                    Process.Start("https://pastebin.com/j8exYqRt");
+                                }
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
                         else
                         {
-                            break;
+                            DialogResult continueResult = MessageBox.Show(null, "You need to select a directory.", "Select a directory", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                            if (continueResult == DialogResult.Cancel)
+                            {
+                                Environment.Exit(0);
+                            }
                         }
                     }
                 }
@@ -90,7 +101,7 @@ namespace Flight_Simulator_Livery_installer
                 MessageBox.Show("Could not get the latest version", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
 
-            if(Properties.Settings.Default.applicationVersion != APP_VERSION)
+            if (Properties.Settings.Default.applicationVersion != APP_VERSION)
             {
                 DialogResult dialogResult = MessageBox.Show("There is a new version of this installer.\nNew: " + APP_VERSION + "\nCurrent: " + Properties.Settings.Default.applicationVersion + "\nWould you like to update?", "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
@@ -101,7 +112,7 @@ namespace Flight_Simulator_Livery_installer
                 }
             }
 
-            if( Properties.Settings.Default.currentVersion.Length == 0)
+            if (Properties.Settings.Default.currentVersion.Length == 0)
             {
                 currentInstalledlbl.Text = "Unknown";
             }
@@ -109,8 +120,8 @@ namespace Flight_Simulator_Livery_installer
             {
                 currentInstalledlbl.Text = Properties.Settings.Default.currentVersion;
             }
-            
-            if(currentInstalledlbl.Text == NEW_VERSION)
+
+            if (currentInstalledlbl.Text == NEW_VERSION)
             {
                 currentInstalledlbl.ForeColor = Color.FromArgb(0, 192, 0);
                 installbtn.Text = "Reinstall";
@@ -183,6 +194,7 @@ namespace Flight_Simulator_Livery_installer
         string downloadFolderPath = "";
         private void startDownload()
         {
+
             Thread thread = new Thread(() =>
             {
                 WebClient client = new WebClient();
@@ -191,7 +203,11 @@ namespace Flight_Simulator_Livery_installer
                 client.DownloadFileAsync(new Uri("https://o11.dev/FlightSimulator/liveries.zip"), downloadPath);
             });
             thread.Start();
+            networkSpeed.Start();
         }
+        int speedMegabytes = 0;
+        int seconds = 1;
+        int downloaded = 0;
         static double ConvertBytesToMegabytes(long bytes)
         {
             return (bytes / 1024f) / 1024f;
@@ -203,7 +219,8 @@ namespace Flight_Simulator_Livery_installer
                 double bytesIn = double.Parse(e.BytesReceived.ToString());
                 double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
                 double percentage = bytesIn / totalBytes * 100;
-                currentVersionlbl.Text = Math.Round(ConvertBytesToMegabytes(e.BytesReceived)) + "/" + Math.Round(ConvertBytesToMegabytes(e.TotalBytesToReceive)) + "MB";
+                downloaded = (int)Math.Round(ConvertBytesToMegabytes(e.BytesReceived));
+                currentVersionlbl.Text = Math.Round(ConvertBytesToMegabytes(e.BytesReceived)) + "/" + Math.Round(ConvertBytesToMegabytes(e.TotalBytesToReceive)) + "MB (" + speedMegabytes + "MB/s)";
                 downloadbar.Value = int.Parse(Math.Truncate(percentage).ToString());
             });
         }
@@ -212,6 +229,7 @@ namespace Flight_Simulator_Livery_installer
             this.BeginInvoke((MethodInvoker)delegate
             {
                 progressbarAnimationHide.Start();
+                networkSpeed.Stop();
             });
         }
 
@@ -227,6 +245,7 @@ namespace Flight_Simulator_Livery_installer
             FileStream zipToOpen = new FileStream(downloadPath, FileMode.Open);
             ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update);
             ZipArchiveExtensions.ExtractToDirectory(archive, downloadFolderPath, true);
+            System.GC.Collect();
 
             currentInstalledlbl.ForeColor = Color.FromArgb(0, 192, 0);
             currentInstalledlbl.Text = NEW_VERSION;
@@ -248,6 +267,10 @@ namespace Flight_Simulator_Livery_installer
             {
 
             }
+            System.GC.Collect();
+
+            zipToOpen.Close();
+            zipToOpen.Dispose();
 
             currentTitlelbl.Text = "Installation done";
             currentVersionlbl.Text = "Done!";
@@ -257,6 +280,7 @@ namespace Flight_Simulator_Livery_installer
             installbtn.Text = "Reinstall";
             installbtn.Enabled = true;
             refreshbtn.Visible = true;
+            System.GC.Collect();
             MessageBox.Show("Installation successful!", "Done!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         }
@@ -277,6 +301,12 @@ namespace Flight_Simulator_Livery_installer
         private void refreshbtn_Click(object sender, EventArgs e)
         {
             checkVersion();
+        }
+
+        private void networkSpeed_Tick(object sender, EventArgs e)
+        {
+            speedMegabytes = downloaded / seconds;
+            seconds++;
         }
     }
 }
