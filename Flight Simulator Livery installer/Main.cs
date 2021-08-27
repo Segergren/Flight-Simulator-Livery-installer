@@ -18,7 +18,6 @@ namespace Flight_Simulator_Livery_installer
             InitializeComponent();
         }
         //MoveForm
-
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
@@ -32,11 +31,11 @@ namespace Flight_Simulator_Livery_installer
         public string APP_VERSION = "";
         private void Main_Load(object sender, EventArgs e)
         {
-            checkVersion();
-            checkInstallationVersion();
+            CheckVersion();
+            CheckInstallationVersion();
         }
 
-        private void checkInstallationVersion()
+        private void CheckInstallationVersion()
         {
             if (!Directory.Exists(@"C:\Users\" + Environment.UserName + @"\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community\"))
             {
@@ -49,7 +48,7 @@ namespace Flight_Simulator_Livery_installer
                         {
                             if (downloadFolderPath.Substring(downloadFolderPath.Length - 1) == @"\")
                             {
-                                downloadFolderPath = downloadFolderPath + @"\";
+                                downloadFolderPath += @"\";
                             }
                             downloadPath = downloadFolderPath + "liveries.zip";
                             if (!Directory.Exists(downloadFolderPath))
@@ -88,13 +87,12 @@ namespace Flight_Simulator_Livery_installer
                 downloadFolderPath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community\";
             }
         }
-        private void checkVersion()
+        private void CheckVersion()
         {
-
             try
             {
-                APP_VERSION = new WebClient().DownloadString("https://o11.dev/FlightSimulator/applicationVersion.txt");
-                NEW_VERSION = new WebClient().DownloadString("https://o11.dev/FlightSimulator/liveriesVersion.txt");
+                APP_VERSION = new WebClient().DownloadString("https://o11.se/FlightSimulator/applicationVersion.txt");
+                NEW_VERSION = new WebClient().DownloadString("https://o11.se/FlightSimulator/liveriesVersion.txt");
             }
             catch
             {
@@ -107,19 +105,12 @@ namespace Flight_Simulator_Livery_installer
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    Process.Start("https://o11.dev/FlightSimulator/Flight%20Simulator%20Livery%20installer.exe");
+                    _ = Process.Start("https://o11.se/FlightSimulator/Flight%20Simulator%20Livery%20installer.exe");
                     Application.Exit();
                 }
             }
 
-            if (Properties.Settings.Default.currentVersion.Length == 0)
-            {
-                currentInstalledlbl.Text = "Unknown";
-            }
-            else
-            {
-                currentInstalledlbl.Text = Properties.Settings.Default.currentVersion;
-            }
+            currentInstalledlbl.Text = Properties.Settings.Default.currentVersion.Length == 0 ? "Unknown" : Properties.Settings.Default.currentVersion;
 
             if (currentInstalledlbl.Text == NEW_VERSION)
             {
@@ -132,13 +123,13 @@ namespace Flight_Simulator_Livery_installer
         }
         private void Main_Paint(object sender, PaintEventArgs e)
         {
-            int width = this.Width - 1;
-            int height = this.Height - 1;
+            int width = Width - 1;
+            int height = Height - 1;
             Pen pen = new Pen(Color.FromArgb(60, 157, 185), 1);
             e.Graphics.DrawRectangle(pen, 0, 0, width, height);
         }
 
-        private void titlelbl_MouseDown(object sender, MouseEventArgs e)
+        private void Titlelbl_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -156,17 +147,17 @@ namespace Flight_Simulator_Livery_installer
             }
         }
 
-        private void closebtn_Click(object sender, EventArgs e)
+        private void Closebtn_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void minimizebtn_Click(object sender, EventArgs e)
+        private void Minimizebtn_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized;
+            WindowState = FormWindowState.Minimized;
         }
 
-        private void installbtn_Click(object sender, EventArgs e)
+        private void Installbtn_Click(object sender, EventArgs e)
         {
             refreshbtn.Visible = false;
             downloadbar.Visible = true;
@@ -175,7 +166,7 @@ namespace Flight_Simulator_Livery_installer
             progressbarAnimation.Start();
         }
 
-        private void progressbarAnimation_Tick(object sender, EventArgs e)
+        private void ProgressbarAnimation_Tick(object sender, EventArgs e)
         {
             if (downloadbar.Location.Y > 142)
             {
@@ -187,34 +178,35 @@ namespace Flight_Simulator_Livery_installer
                 currentVersionlbl.ForeColor = Color.FromArgb(60, 157, 185);
                 currentVersionlbl.Font = new Font(currentVersionlbl.Font.FontFamily, 18);
                 currentTitlelbl.Text = "Downloading";
-                startDownload();
+                StartDownload();
             }
         }
-        string downloadPath = "";
-        string downloadFolderPath = "";
-        private void startDownload()
-        {
 
+        private string downloadPath = "";
+        private string downloadFolderPath = "";
+        private void StartDownload()
+        {
             Thread thread = new Thread(() =>
             {
                 WebClient client = new WebClient();
-                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-                client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-                client.DownloadFileAsync(new Uri("https://o11.dev/FlightSimulator/liveries.zip"), downloadPath);
+                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
+                client.DownloadFileAsync(new Uri("https://o11.se/FlightSimulator/liveries.zip"), downloadPath);
             });
             thread.Start();
             networkSpeed.Start();
         }
-        int speedMegabytes = 0;
-        int seconds = 1;
-        int downloaded = 0;
+
+        private int speedMegabytes = 0;
+        private int seconds = 1;
+        private int downloaded = 0;
         static double ConvertBytesToMegabytes(long bytes)
         {
             return (bytes / 1024f) / 1024f;
         }
-        void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            this.BeginInvoke((MethodInvoker)delegate
+            BeginInvoke((MethodInvoker)delegate
             {
                 double bytesIn = double.Parse(e.BytesReceived.ToString());
                 double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
@@ -224,9 +216,9 @@ namespace Flight_Simulator_Livery_installer
                 downloadbar.Value = int.Parse(Math.Truncate(percentage).ToString());
             });
         }
-        void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            this.BeginInvoke((MethodInvoker)delegate
+            BeginInvoke((MethodInvoker)delegate
             {
                 progressbarAnimationHide.Start();
                 networkSpeed.Stop();
@@ -234,18 +226,18 @@ namespace Flight_Simulator_Livery_installer
         }
 
 
-        private void install()
+        private void Install()
         {
             currentTitlelbl.Text = "Installing";
             currentVersionlbl.Text = "Unzipping files...";
             currentTitlelbl.Refresh();
             currentVersionlbl.Refresh();
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             FileStream zipToOpen = new FileStream(downloadPath, FileMode.Open);
             ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update);
             ZipArchiveExtensions.ExtractToDirectory(archive, downloadFolderPath, true);
-            System.GC.Collect();
+            GC.Collect();
 
             currentInstalledlbl.ForeColor = Color.FromArgb(0, 192, 0);
             currentInstalledlbl.Text = NEW_VERSION;
@@ -257,7 +249,7 @@ namespace Flight_Simulator_Livery_installer
             currentTitlelbl.Refresh();
             currentVersionlbl.Refresh();
             zipToOpen.Close();
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             try
             {
@@ -267,7 +259,7 @@ namespace Flight_Simulator_Livery_installer
             {
 
             }
-            System.GC.Collect();
+            GC.Collect();
 
             zipToOpen.Close();
             zipToOpen.Dispose();
@@ -276,16 +268,15 @@ namespace Flight_Simulator_Livery_installer
             currentVersionlbl.Text = "Done!";
             currentTitlelbl.Refresh();
             currentVersionlbl.Refresh();
-            System.Threading.Thread.Sleep(250);
+            Thread.Sleep(250);
             installbtn.Text = "Reinstall";
             installbtn.Enabled = true;
             refreshbtn.Visible = true;
-            System.GC.Collect();
+            GC.Collect();
             MessageBox.Show("Installation successful!", "Done!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
         }
 
-        private void progressbarAnimationHide_Tick(object sender, EventArgs e)
+        private void ProgressbarAnimationHide_Tick(object sender, EventArgs e)
         {
             if (downloadbar.Location.Y < 171)
             {
@@ -294,16 +285,16 @@ namespace Flight_Simulator_Livery_installer
             else
             {
                 progressbarAnimationHide.Stop();
-                install();
+                Install();
             }
         }
 
-        private void refreshbtn_Click(object sender, EventArgs e)
+        private void Refreshbtn_Click(object sender, EventArgs e)
         {
-            checkVersion();
+            CheckVersion();
         }
 
-        private void networkSpeed_Tick(object sender, EventArgs e)
+        private void NetworkSpeed_Tick(object sender, EventArgs e)
         {
             speedMegabytes = downloaded / seconds;
             seconds++;

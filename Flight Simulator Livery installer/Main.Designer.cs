@@ -62,7 +62,7 @@
             this.closebtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.closebtn.TabIndex = 0;
             this.closebtn.TabStop = false;
-            this.closebtn.Click += new System.EventHandler(this.closebtn_Click);
+            this.closebtn.Click += new System.EventHandler(this.Closebtn_Click);
             // 
             // minimizebtn
             // 
@@ -74,7 +74,7 @@
             this.minimizebtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.minimizebtn.TabIndex = 1;
             this.minimizebtn.TabStop = false;
-            this.minimizebtn.Click += new System.EventHandler(this.minimizebtn_Click);
+            this.minimizebtn.Click += new System.EventHandler(this.Minimizebtn_Click);
             // 
             // titlelbl
             // 
@@ -86,7 +86,7 @@
             this.titlelbl.TabIndex = 2;
             this.titlelbl.Text = "Livery installer";
             this.titlelbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.titlelbl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.titlelbl_MouseDown);
+            this.titlelbl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Titlelbl_MouseDown);
             // 
             // pictureBox3
             // 
@@ -141,7 +141,7 @@
             this.installbtn.TabIndex = 10;
             this.installbtn.Text = "Install";
             this.installbtn.UseVisualStyleBackColor = true;
-            this.installbtn.Click += new System.EventHandler(this.installbtn_Click);
+            this.installbtn.Click += new System.EventHandler(this.Installbtn_Click);
             // 
             // pictureBox1
             // 
@@ -163,7 +163,7 @@
             // progressbarAnimation
             // 
             this.progressbarAnimation.Interval = 10;
-            this.progressbarAnimation.Tick += new System.EventHandler(this.progressbarAnimation_Tick);
+            this.progressbarAnimation.Tick += new System.EventHandler(this.ProgressbarAnimation_Tick);
             // 
             // currentVersionlbl
             // 
@@ -179,7 +179,7 @@
             // progressbarAnimationHide
             // 
             this.progressbarAnimationHide.Interval = 10;
-            this.progressbarAnimationHide.Tick += new System.EventHandler(this.progressbarAnimationHide_Tick);
+            this.progressbarAnimationHide.Tick += new System.EventHandler(this.ProgressbarAnimationHide_Tick);
             // 
             // refreshbtn
             // 
@@ -191,12 +191,12 @@
             this.refreshbtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.refreshbtn.TabIndex = 14;
             this.refreshbtn.TabStop = false;
-            this.refreshbtn.Click += new System.EventHandler(this.refreshbtn_Click);
+            this.refreshbtn.Click += new System.EventHandler(this.Refreshbtn_Click);
             // 
             // networkSpeed
             // 
             this.networkSpeed.Interval = 1000;
-            this.networkSpeed.Tick += new System.EventHandler(this.networkSpeed_Tick);
+            this.networkSpeed.Tick += new System.EventHandler(this.NetworkSpeed_Tick);
             // 
             // Main
             // 

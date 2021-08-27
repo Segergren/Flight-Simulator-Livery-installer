@@ -26,7 +26,7 @@
     <TargetCulture>en</TargetCulture>
     <ProductName>Liveries installer</ProductName>
     <PublisherName>O11Software</PublisherName>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -56,10 +56,10 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>8055AB9B8F6492C21E91A4460F111EBB97F7E0C1</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>146CD9C969AF71EC35A6DE97911BAA132D930B0E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Flight Simulator Livery installer_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Flight Simulator Livery installer_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -112,7 +112,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="Flight Simulator Livery installer_1_TemporaryKey.pfx" />
     <None Include="Flight Simulator Livery installer_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
