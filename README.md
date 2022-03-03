@@ -1,3 +1,5 @@
+![Image of Program](https://segergren.dev/images/undraw/warning.png)
+
 # Flight Simulator Livery installer
 The program makes it easy to install the latest leveries for Microsoft Flight Simulator 2020.
 
@@ -14,5 +16,3 @@ You may need to run it as administrator if you have issues.
 #### 3. Click Install
 
 ...and you're off!
-
-![Image of Program](https://o11.se/FlightSimulator/preview.PNG)
